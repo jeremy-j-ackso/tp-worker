@@ -60,6 +60,8 @@ tp-worker/
   job/
     job.go
     job_test.go
+  proto/
+    tp-worker.proto
 ```
 
 As much as possible, following [Effective Go](https://go.dev/doc/effective_go)

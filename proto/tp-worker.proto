@@ -1,0 +1,37 @@
+// Jobs service definition
+service Jobs {
+  // Get job output
+  rpc Output (OutputReq) return (stream OutputResp) {}
+
+  // Ping the server
+  rpc Ping (PingReq) returns (PingResp) {}
+
+  // Get job status
+  rpc Status (StatusReq) return (StatusResp) {}
+
+  // Start a job
+  rpc Start (StartReq) returns (StartResp) {}
+
+  // Stop a job
+  rpc Stop (StopReq) returns (StopResp) {}
+}
+
+message OutputReq {}
+
+message OutputResp {}
+
+message PingReq {}
+
+message PingResp {}
+
+message StatusReq {}
+
+message StatusResp {}
+
+message StartReq {}
+
+message StartResp {}
+
+message StopReq {}
+
+message StopResp {}
