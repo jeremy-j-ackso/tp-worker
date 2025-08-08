@@ -1,0 +1,116 @@
+syntax = "proto3";
+
+option go_package = "tp-worker/proto/jobs";
+
+package tpworker.jobs;
+
+// Jobs service definition
+service Jobs {
+  // Stream job output
+  rpc Output (OutputReq) returns (stream OutputResp) {}
+
+  // Ping the server
+  rpc Ping (PingMsg) returns (PingMsg) {}
+
+  // Get job status
+  rpc Status (StatusReq) returns (StatusResp) {}
+
+  // Start a job
+  rpc Start (StartReq) returns (ActionResp) {}
+
+  // Stop a job
+  rpc Stop (StopReq) returns (ActionResp) {}
+}
+
+message OutputReq {
+  string ident = 1; // either a pid or name
+}
+
+message OutputResp {
+  repeated string out = 1;
+}
+
+message PingMsg {}
+
+message StatusReq {
+  optional string ident = 1;
+}
+
+enum Status {
+  Queued = 0;
+  Started = 1;
+  Running = 2;
+  Hung = 3;
+  RunExited = 4;
+  RunKilled = 5;
+  RunFailed = 6;
+  Error = 7;
+}
+
+message StatusLine {
+  string pid = 1;
+  string name = 2;
+  Status status = 3;
+  int32 outlen = 4;
+  string submitted = 5;
+  string started = 6;
+  string stopped = 7;
+  string duration = 8;
+}
+
+message StatusResp {
+  repeated StatusLine statusline = 1;
+}
+
+message StartReq {
+  string cmd = 1;
+  optional string name = 2;
+}
+
+// Signal names from signal(7). Enumeration id's do not correspond to signal numeric values.
+enum Signal {
+  SIGTERM = 0; // SIGTERM is the default we send when no value is provided by the user
+  SIGHUP = 1;
+  SIGINT = 2;
+  SIGQUIT = 3;
+  SIGILL = 4;
+  SIGTRAP = 5;
+  SIGABRT = 6;
+  SIGIOT = 7;
+  SIGBUS = 8;
+  SIGFPE = 9;
+  SIGKILL = 10;
+  SIGUSR1 = 11;
+  SIGSEGV = 12;
+  SIGUSR2 = 13;
+  SIGPIPE = 14;
+  SIGALRM = 15;
+  SIGSTKFLT = 16;
+  SIGCHLD = 17;
+  SIGCLD = 18;
+  SIGSTOP = 19;
+  SIGTSTP = 20;
+  SIGTTIN = 21;
+  SIGTTOU = 22;
+  SIGURG = 23;
+  SIGXCPU = 24;
+  SIGXFSZ = 25;
+  SIGVTALRM = 26;
+  SIGPROF = 27;
+  SIGWINCH = 28;
+  SIGIO = 29;
+  SIGPWR = 30;
+  SIGSYS = 31;
+}
+
+message StopReq {
+  string ident = 1;
+  optional Signal signal = 2;
+  optional int32 signum = 3;
+}
+
+message ActionResp {
+  string cmd = 1;
+  string name = 2;
+  string pid = 3;
+}
