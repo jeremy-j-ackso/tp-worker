@@ -39,9 +39,9 @@ type JobsClient interface {
 	// Get job status
 	Status(ctx context.Context, in *StatusReq, opts ...grpc.CallOption) (*StatusResp, error)
 	// Start a job
-	Start(ctx context.Context, in *StartReq, opts ...grpc.CallOption) (*ActionResp, error)
+	Start(ctx context.Context, in *StartReq, opts ...grpc.CallOption) (*StartResp, error)
 	// Stop a job
-	Stop(ctx context.Context, in *StopReq, opts ...grpc.CallOption) (*ActionResp, error)
+	Stop(ctx context.Context, in *StopReq, opts ...grpc.CallOption) (*StopResp, error)
 }
 
 type jobsClient struct {
@@ -91,9 +91,9 @@ func (c *jobsClient) Status(ctx context.Context, in *StatusReq, opts ...grpc.Cal
 	return out, nil
 }
 
-func (c *jobsClient) Start(ctx context.Context, in *StartReq, opts ...grpc.CallOption) (*ActionResp, error) {
+func (c *jobsClient) Start(ctx context.Context, in *StartReq, opts ...grpc.CallOption) (*StartResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ActionResp)
+	out := new(StartResp)
 	err := c.cc.Invoke(ctx, Jobs_Start_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -101,9 +101,9 @@ func (c *jobsClient) Start(ctx context.Context, in *StartReq, opts ...grpc.CallO
 	return out, nil
 }
 
-func (c *jobsClient) Stop(ctx context.Context, in *StopReq, opts ...grpc.CallOption) (*ActionResp, error) {
+func (c *jobsClient) Stop(ctx context.Context, in *StopReq, opts ...grpc.CallOption) (*StopResp, error) {
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
-	out := new(ActionResp)
+	out := new(StopResp)
 	err := c.cc.Invoke(ctx, Jobs_Stop_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
@@ -124,9 +124,9 @@ type JobsServer interface {
 	// Get job status
 	Status(context.Context, *StatusReq) (*StatusResp, error)
 	// Start a job
-	Start(context.Context, *StartReq) (*ActionResp, error)
+	Start(context.Context, *StartReq) (*StartResp, error)
 	// Stop a job
-	Stop(context.Context, *StopReq) (*ActionResp, error)
+	Stop(context.Context, *StopReq) (*StopResp, error)
 	mustEmbedUnimplementedJobsServer()
 }
 
@@ -146,10 +146,10 @@ func (UnimplementedJobsServer) Ping(context.Context, *PingMsg) (*PingMsg, error)
 func (UnimplementedJobsServer) Status(context.Context, *StatusReq) (*StatusResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Status not implemented")
 }
-func (UnimplementedJobsServer) Start(context.Context, *StartReq) (*ActionResp, error) {
+func (UnimplementedJobsServer) Start(context.Context, *StartReq) (*StartResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Start not implemented")
 }
-func (UnimplementedJobsServer) Stop(context.Context, *StopReq) (*ActionResp, error) {
+func (UnimplementedJobsServer) Stop(context.Context, *StopReq) (*StopResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Stop not implemented")
 }
 func (UnimplementedJobsServer) mustEmbedUnimplementedJobsServer() {}

@@ -24,37 +24,25 @@ const (
 type Status int32
 
 const (
-	Status_Queued    Status = 0
-	Status_Started   Status = 1
-	Status_Running   Status = 2
-	Status_Hung      Status = 3
-	Status_RunExited Status = 4
-	Status_RunKilled Status = 5
-	Status_RunFailed Status = 6
-	Status_Error     Status = 7
+	Status_Started Status = 0
+	Status_Exited  Status = 1
+	Status_Killed  Status = 2
+	Status_Error   Status = 3
 )
 
 // Enum value maps for Status.
 var (
 	Status_name = map[int32]string{
-		0: "Queued",
-		1: "Started",
-		2: "Running",
-		3: "Hung",
-		4: "RunExited",
-		5: "RunKilled",
-		6: "RunFailed",
-		7: "Error",
+		0: "Started",
+		1: "Exited",
+		2: "Killed",
+		3: "Error",
 	}
 	Status_value = map[string]int32{
-		"Queued":    0,
-		"Started":   1,
-		"Running":   2,
-		"Hung":      3,
-		"RunExited": 4,
-		"RunKilled": 5,
-		"RunFailed": 6,
-		"Error":     7,
+		"Started": 0,
+		"Exited":  1,
+		"Killed":  2,
+		"Error":   3,
 	}
 )
 
@@ -85,146 +73,9 @@ func (Status) EnumDescriptor() ([]byte, []int) {
 	return file_jobs_proto_rawDescGZIP(), []int{0}
 }
 
-// Signal names from signal(7). Enumeration id's do not correspond to signal numeric values.
-type Signal int32
-
-const (
-	Signal_SIGTERM   Signal = 0 // SIGTERM is the default we send when no value is provided by the user
-	Signal_SIGHUP    Signal = 1
-	Signal_SIGINT    Signal = 2
-	Signal_SIGQUIT   Signal = 3
-	Signal_SIGILL    Signal = 4
-	Signal_SIGTRAP   Signal = 5
-	Signal_SIGABRT   Signal = 6
-	Signal_SIGIOT    Signal = 7
-	Signal_SIGBUS    Signal = 8
-	Signal_SIGFPE    Signal = 9
-	Signal_SIGKILL   Signal = 10
-	Signal_SIGUSR1   Signal = 11
-	Signal_SIGSEGV   Signal = 12
-	Signal_SIGUSR2   Signal = 13
-	Signal_SIGPIPE   Signal = 14
-	Signal_SIGALRM   Signal = 15
-	Signal_SIGSTKFLT Signal = 16
-	Signal_SIGCHLD   Signal = 17
-	Signal_SIGCLD    Signal = 18
-	Signal_SIGSTOP   Signal = 19
-	Signal_SIGTSTP   Signal = 20
-	Signal_SIGTTIN   Signal = 21
-	Signal_SIGTTOU   Signal = 22
-	Signal_SIGURG    Signal = 23
-	Signal_SIGXCPU   Signal = 24
-	Signal_SIGXFSZ   Signal = 25
-	Signal_SIGVTALRM Signal = 26
-	Signal_SIGPROF   Signal = 27
-	Signal_SIGWINCH  Signal = 28
-	Signal_SIGIO     Signal = 29
-	Signal_SIGPWR    Signal = 30
-	Signal_SIGSYS    Signal = 31
-)
-
-// Enum value maps for Signal.
-var (
-	Signal_name = map[int32]string{
-		0:  "SIGTERM",
-		1:  "SIGHUP",
-		2:  "SIGINT",
-		3:  "SIGQUIT",
-		4:  "SIGILL",
-		5:  "SIGTRAP",
-		6:  "SIGABRT",
-		7:  "SIGIOT",
-		8:  "SIGBUS",
-		9:  "SIGFPE",
-		10: "SIGKILL",
-		11: "SIGUSR1",
-		12: "SIGSEGV",
-		13: "SIGUSR2",
-		14: "SIGPIPE",
-		15: "SIGALRM",
-		16: "SIGSTKFLT",
-		17: "SIGCHLD",
-		18: "SIGCLD",
-		19: "SIGSTOP",
-		20: "SIGTSTP",
-		21: "SIGTTIN",
-		22: "SIGTTOU",
-		23: "SIGURG",
-		24: "SIGXCPU",
-		25: "SIGXFSZ",
-		26: "SIGVTALRM",
-		27: "SIGPROF",
-		28: "SIGWINCH",
-		29: "SIGIO",
-		30: "SIGPWR",
-		31: "SIGSYS",
-	}
-	Signal_value = map[string]int32{
-		"SIGTERM":   0,
-		"SIGHUP":    1,
-		"SIGINT":    2,
-		"SIGQUIT":   3,
-		"SIGILL":    4,
-		"SIGTRAP":   5,
-		"SIGABRT":   6,
-		"SIGIOT":    7,
-		"SIGBUS":    8,
-		"SIGFPE":    9,
-		"SIGKILL":   10,
-		"SIGUSR1":   11,
-		"SIGSEGV":   12,
-		"SIGUSR2":   13,
-		"SIGPIPE":   14,
-		"SIGALRM":   15,
-		"SIGSTKFLT": 16,
-		"SIGCHLD":   17,
-		"SIGCLD":    18,
-		"SIGSTOP":   19,
-		"SIGTSTP":   20,
-		"SIGTTIN":   21,
-		"SIGTTOU":   22,
-		"SIGURG":    23,
-		"SIGXCPU":   24,
-		"SIGXFSZ":   25,
-		"SIGVTALRM": 26,
-		"SIGPROF":   27,
-		"SIGWINCH":  28,
-		"SIGIO":     29,
-		"SIGPWR":    30,
-		"SIGSYS":    31,
-	}
-)
-
-func (x Signal) Enum() *Signal {
-	p := new(Signal)
-	*p = x
-	return p
-}
-
-func (x Signal) String() string {
-	return protoimpl.X.EnumStringOf(x.Descriptor(), protoreflect.EnumNumber(x))
-}
-
-func (Signal) Descriptor() protoreflect.EnumDescriptor {
-	return file_jobs_proto_enumTypes[1].Descriptor()
-}
-
-func (Signal) Type() protoreflect.EnumType {
-	return &file_jobs_proto_enumTypes[1]
-}
-
-func (x Signal) Number() protoreflect.EnumNumber {
-	return protoreflect.EnumNumber(x)
-}
-
-// Deprecated: Use Signal.Descriptor instead.
-func (Signal) EnumDescriptor() ([]byte, []int) {
-	return file_jobs_proto_rawDescGZIP(), []int{1}
-}
-
 type OutputReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Ident         string                 `protobuf:"bytes,1,opt,name=ident,proto3" json:"ident,omitempty"` // either a pid or name
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -259,16 +110,16 @@ func (*OutputReq) Descriptor() ([]byte, []int) {
 	return file_jobs_proto_rawDescGZIP(), []int{0}
 }
 
-func (x *OutputReq) GetIdent() string {
+func (x *OutputReq) GetId() string {
 	if x != nil {
-		return x.Ident
+		return x.Id
 	}
 	return ""
 }
 
 type OutputResp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Out           []string               `protobuf:"bytes,1,rep,name=out,proto3" json:"out,omitempty"`
+	Out           []byte                 `protobuf:"bytes,1,opt,name=out,proto3" json:"out,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -303,7 +154,7 @@ func (*OutputResp) Descriptor() ([]byte, []int) {
 	return file_jobs_proto_rawDescGZIP(), []int{1}
 }
 
-func (x *OutputResp) GetOut() []string {
+func (x *OutputResp) GetOut() []byte {
 	if x != nil {
 		return x.Out
 	}
@@ -348,7 +199,7 @@ func (*PingMsg) Descriptor() ([]byte, []int) {
 
 type StatusReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Ident         *string                `protobuf:"bytes,1,opt,name=ident,proto3,oneof" json:"ident,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -383,23 +234,22 @@ func (*StatusReq) Descriptor() ([]byte, []int) {
 	return file_jobs_proto_rawDescGZIP(), []int{3}
 }
 
-func (x *StatusReq) GetIdent() string {
-	if x != nil && x.Ident != nil {
-		return *x.Ident
+func (x *StatusReq) GetId() string {
+	if x != nil {
+		return x.Id
 	}
 	return ""
 }
 
 type StatusLine struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Pid           string                 `protobuf:"bytes,1,opt,name=pid,proto3" json:"pid,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Status        Status                 `protobuf:"varint,3,opt,name=status,proto3,enum=tpworker.jobs.Status" json:"status,omitempty"`
-	Outlen        int32                  `protobuf:"varint,4,opt,name=outlen,proto3" json:"outlen,omitempty"`
-	Submitted     string                 `protobuf:"bytes,5,opt,name=submitted,proto3" json:"submitted,omitempty"`
-	Started       string                 `protobuf:"bytes,6,opt,name=started,proto3" json:"started,omitempty"`
-	Stopped       string                 `protobuf:"bytes,7,opt,name=stopped,proto3" json:"stopped,omitempty"`
-	Duration      string                 `protobuf:"bytes,8,opt,name=duration,proto3" json:"duration,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	User          string                 `protobuf:"bytes,2,opt,name=user,proto3" json:"user,omitempty"`
+	Command       []string               `protobuf:"bytes,3,rep,name=command,proto3" json:"command,omitempty"`
+	Status        Status                 `protobuf:"varint,4,opt,name=status,proto3,enum=tpworker.jobs.Status" json:"status,omitempty"`
+	Exitcode      int32                  `protobuf:"varint,5,opt,name=exitcode,proto3" json:"exitcode,omitempty"`
+	Started       int64                  `protobuf:"varint,6,opt,name=started,proto3" json:"started,omitempty"`
+	Stopped       int64                  `protobuf:"varint,7,opt,name=stopped,proto3" json:"stopped,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -434,60 +284,53 @@ func (*StatusLine) Descriptor() ([]byte, []int) {
 	return file_jobs_proto_rawDescGZIP(), []int{4}
 }
 
-func (x *StatusLine) GetPid() string {
+func (x *StatusLine) GetId() string {
 	if x != nil {
-		return x.Pid
+		return x.Id
 	}
 	return ""
 }
 
-func (x *StatusLine) GetName() string {
+func (x *StatusLine) GetUser() string {
 	if x != nil {
-		return x.Name
+		return x.User
 	}
 	return ""
+}
+
+func (x *StatusLine) GetCommand() []string {
+	if x != nil {
+		return x.Command
+	}
+	return nil
 }
 
 func (x *StatusLine) GetStatus() Status {
 	if x != nil {
 		return x.Status
 	}
-	return Status_Queued
+	return Status_Started
 }
 
-func (x *StatusLine) GetOutlen() int32 {
+func (x *StatusLine) GetExitcode() int32 {
 	if x != nil {
-		return x.Outlen
+		return x.Exitcode
 	}
 	return 0
 }
 
-func (x *StatusLine) GetSubmitted() string {
-	if x != nil {
-		return x.Submitted
-	}
-	return ""
-}
-
-func (x *StatusLine) GetStarted() string {
+func (x *StatusLine) GetStarted() int64 {
 	if x != nil {
 		return x.Started
 	}
-	return ""
+	return 0
 }
 
-func (x *StatusLine) GetStopped() string {
+func (x *StatusLine) GetStopped() int64 {
 	if x != nil {
 		return x.Stopped
 	}
-	return ""
-}
-
-func (x *StatusLine) GetDuration() string {
-	if x != nil {
-		return x.Duration
-	}
-	return ""
+	return 0
 }
 
 type StatusResp struct {
@@ -536,8 +379,8 @@ func (x *StatusResp) GetStatusline() []*StatusLine {
 
 type StartReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Cmd           string                 `protobuf:"bytes,1,opt,name=cmd,proto3" json:"cmd,omitempty"`
-	Name          *string                `protobuf:"bytes,2,opt,name=name,proto3,oneof" json:"name,omitempty"`
+	Cmd           []string               `protobuf:"bytes,1,rep,name=cmd,proto3" json:"cmd,omitempty"`
+	Env           []string               `protobuf:"bytes,2,rep,name=env,proto3" json:"env,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
@@ -572,32 +415,74 @@ func (*StartReq) Descriptor() ([]byte, []int) {
 	return file_jobs_proto_rawDescGZIP(), []int{6}
 }
 
-func (x *StartReq) GetCmd() string {
+func (x *StartReq) GetCmd() []string {
 	if x != nil {
 		return x.Cmd
 	}
-	return ""
+	return nil
 }
 
-func (x *StartReq) GetName() string {
-	if x != nil && x.Name != nil {
-		return *x.Name
+func (x *StartReq) GetEnv() []string {
+	if x != nil {
+		return x.Env
+	}
+	return nil
+}
+
+type StartResp struct {
+	state         protoimpl.MessageState `protogen:"open.v1"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
+	unknownFields protoimpl.UnknownFields
+	sizeCache     protoimpl.SizeCache
+}
+
+func (x *StartResp) Reset() {
+	*x = StartResp{}
+	mi := &file_jobs_proto_msgTypes[7]
+	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+	ms.StoreMessageInfo(mi)
+}
+
+func (x *StartResp) String() string {
+	return protoimpl.X.MessageStringOf(x)
+}
+
+func (*StartResp) ProtoMessage() {}
+
+func (x *StartResp) ProtoReflect() protoreflect.Message {
+	mi := &file_jobs_proto_msgTypes[7]
+	if x != nil {
+		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
+		if ms.LoadMessageInfo() == nil {
+			ms.StoreMessageInfo(mi)
+		}
+		return ms
+	}
+	return mi.MessageOf(x)
+}
+
+// Deprecated: Use StartResp.ProtoReflect.Descriptor instead.
+func (*StartResp) Descriptor() ([]byte, []int) {
+	return file_jobs_proto_rawDescGZIP(), []int{7}
+}
+
+func (x *StartResp) GetId() string {
+	if x != nil {
+		return x.Id
 	}
 	return ""
 }
 
 type StopReq struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
-	Ident         string                 `protobuf:"bytes,1,opt,name=ident,proto3" json:"ident,omitempty"`
-	Signal        *Signal                `protobuf:"varint,2,opt,name=signal,proto3,enum=tpworker.jobs.Signal,oneof" json:"signal,omitempty"`
-	Signum        *int32                 `protobuf:"varint,3,opt,name=signum,proto3,oneof" json:"signum,omitempty"`
+	Id            string                 `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
 func (x *StopReq) Reset() {
 	*x = StopReq{}
-	mi := &file_jobs_proto_msgTypes[7]
+	mi := &file_jobs_proto_msgTypes[8]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
@@ -609,7 +494,7 @@ func (x *StopReq) String() string {
 func (*StopReq) ProtoMessage() {}
 
 func (x *StopReq) ProtoReflect() protoreflect.Message {
-	mi := &file_jobs_proto_msgTypes[7]
+	mi := &file_jobs_proto_msgTypes[8]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -622,54 +507,39 @@ func (x *StopReq) ProtoReflect() protoreflect.Message {
 
 // Deprecated: Use StopReq.ProtoReflect.Descriptor instead.
 func (*StopReq) Descriptor() ([]byte, []int) {
-	return file_jobs_proto_rawDescGZIP(), []int{7}
+	return file_jobs_proto_rawDescGZIP(), []int{8}
 }
 
-func (x *StopReq) GetIdent() string {
+func (x *StopReq) GetId() string {
 	if x != nil {
-		return x.Ident
+		return x.Id
 	}
 	return ""
 }
 
-func (x *StopReq) GetSignal() Signal {
-	if x != nil && x.Signal != nil {
-		return *x.Signal
-	}
-	return Signal_SIGTERM
-}
-
-func (x *StopReq) GetSignum() int32 {
-	if x != nil && x.Signum != nil {
-		return *x.Signum
-	}
-	return 0
-}
-
-type ActionResp struct {
+type StopResp struct {
 	state         protoimpl.MessageState `protogen:"open.v1"`
 	Cmd           string                 `protobuf:"bytes,1,opt,name=cmd,proto3" json:"cmd,omitempty"`
-	Name          string                 `protobuf:"bytes,2,opt,name=name,proto3" json:"name,omitempty"`
-	Pid           string                 `protobuf:"bytes,3,opt,name=pid,proto3" json:"pid,omitempty"`
+	Id            string                 `protobuf:"bytes,2,opt,name=id,proto3" json:"id,omitempty"`
 	unknownFields protoimpl.UnknownFields
 	sizeCache     protoimpl.SizeCache
 }
 
-func (x *ActionResp) Reset() {
-	*x = ActionResp{}
-	mi := &file_jobs_proto_msgTypes[8]
+func (x *StopResp) Reset() {
+	*x = StopResp{}
+	mi := &file_jobs_proto_msgTypes[9]
 	ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 	ms.StoreMessageInfo(mi)
 }
 
-func (x *ActionResp) String() string {
+func (x *StopResp) String() string {
 	return protoimpl.X.MessageStringOf(x)
 }
 
-func (*ActionResp) ProtoMessage() {}
+func (*StopResp) ProtoMessage() {}
 
-func (x *ActionResp) ProtoReflect() protoreflect.Message {
-	mi := &file_jobs_proto_msgTypes[8]
+func (x *StopResp) ProtoReflect() protoreflect.Message {
+	mi := &file_jobs_proto_msgTypes[9]
 	if x != nil {
 		ms := protoimpl.X.MessageStateOf(protoimpl.Pointer(x))
 		if ms.LoadMessageInfo() == nil {
@@ -680,28 +550,21 @@ func (x *ActionResp) ProtoReflect() protoreflect.Message {
 	return mi.MessageOf(x)
 }
 
-// Deprecated: Use ActionResp.ProtoReflect.Descriptor instead.
-func (*ActionResp) Descriptor() ([]byte, []int) {
-	return file_jobs_proto_rawDescGZIP(), []int{8}
+// Deprecated: Use StopResp.ProtoReflect.Descriptor instead.
+func (*StopResp) Descriptor() ([]byte, []int) {
+	return file_jobs_proto_rawDescGZIP(), []int{9}
 }
 
-func (x *ActionResp) GetCmd() string {
+func (x *StopResp) GetCmd() string {
 	if x != nil {
 		return x.Cmd
 	}
 	return ""
 }
 
-func (x *ActionResp) GetName() string {
+func (x *StopResp) GetId() string {
 	if x != nil {
-		return x.Name
-	}
-	return ""
-}
-
-func (x *ActionResp) GetPid() string {
-	if x != nil {
-		return x.Pid
+		return x.Id
 	}
 	return ""
 }
@@ -711,106 +574,52 @@ var File_jobs_proto protoreflect.FileDescriptor
 const file_jobs_proto_rawDesc = "" +
 	"\n" +
 	"\n" +
-	"jobs.proto\x12\rtpworker.jobs\"!\n" +
-	"\tOutputReq\x12\x14\n" +
-	"\x05ident\x18\x01 \x01(\tR\x05ident\"\x1e\n" +
+	"jobs.proto\x12\rtpworker.jobs\"\x1b\n" +
+	"\tOutputReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\x1e\n" +
 	"\n" +
 	"OutputResp\x12\x10\n" +
-	"\x03out\x18\x01 \x03(\tR\x03out\"\t\n" +
-	"\aPingMsg\"0\n" +
-	"\tStatusReq\x12\x19\n" +
-	"\x05ident\x18\x01 \x01(\tH\x00R\x05ident\x88\x01\x01B\b\n" +
-	"\x06_ident\"\xe7\x01\n" +
+	"\x03out\x18\x01 \x01(\fR\x03out\"\t\n" +
+	"\aPingMsg\"\x1b\n" +
+	"\tStatusReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\xc9\x01\n" +
 	"\n" +
-	"StatusLine\x12\x10\n" +
-	"\x03pid\x18\x01 \x01(\tR\x03pid\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12-\n" +
-	"\x06status\x18\x03 \x01(\x0e2\x15.tpworker.jobs.StatusR\x06status\x12\x16\n" +
-	"\x06outlen\x18\x04 \x01(\x05R\x06outlen\x12\x1c\n" +
-	"\tsubmitted\x18\x05 \x01(\tR\tsubmitted\x12\x18\n" +
-	"\astarted\x18\x06 \x01(\tR\astarted\x12\x18\n" +
-	"\astopped\x18\a \x01(\tR\astopped\x12\x1a\n" +
-	"\bduration\x18\b \x01(\tR\bduration\"G\n" +
+	"StatusLine\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\x12\x12\n" +
+	"\x04user\x18\x02 \x01(\tR\x04user\x12\x18\n" +
+	"\acommand\x18\x03 \x03(\tR\acommand\x12-\n" +
+	"\x06status\x18\x04 \x01(\x0e2\x15.tpworker.jobs.StatusR\x06status\x12\x1a\n" +
+	"\bexitcode\x18\x05 \x01(\x05R\bexitcode\x12\x18\n" +
+	"\astarted\x18\x06 \x01(\x03R\astarted\x12\x18\n" +
+	"\astopped\x18\a \x01(\x03R\astopped\"G\n" +
 	"\n" +
 	"StatusResp\x129\n" +
 	"\n" +
 	"statusline\x18\x01 \x03(\v2\x19.tpworker.jobs.StatusLineR\n" +
-	"statusline\">\n" +
+	"statusline\".\n" +
 	"\bStartReq\x12\x10\n" +
-	"\x03cmd\x18\x01 \x01(\tR\x03cmd\x12\x17\n" +
-	"\x04name\x18\x02 \x01(\tH\x00R\x04name\x88\x01\x01B\a\n" +
-	"\x05_name\"\x86\x01\n" +
-	"\aStopReq\x12\x14\n" +
-	"\x05ident\x18\x01 \x01(\tR\x05ident\x122\n" +
-	"\x06signal\x18\x02 \x01(\x0e2\x15.tpworker.jobs.SignalH\x00R\x06signal\x88\x01\x01\x12\x1b\n" +
-	"\x06signum\x18\x03 \x01(\x05H\x01R\x06signum\x88\x01\x01B\t\n" +
-	"\a_signalB\t\n" +
-	"\a_signum\"D\n" +
+	"\x03cmd\x18\x01 \x03(\tR\x03cmd\x12\x10\n" +
+	"\x03env\x18\x02 \x03(\tR\x03env\"\x1b\n" +
+	"\tStartResp\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\"\x19\n" +
+	"\aStopReq\x12\x0e\n" +
+	"\x02id\x18\x01 \x01(\tR\x02id\",\n" +
+	"\bStopResp\x12\x10\n" +
+	"\x03cmd\x18\x01 \x01(\tR\x03cmd\x12\x0e\n" +
+	"\x02id\x18\x02 \x01(\tR\x02id*8\n" +
+	"\x06Status\x12\v\n" +
+	"\aStarted\x10\x00\x12\n" +
 	"\n" +
-	"ActionResp\x12\x10\n" +
-	"\x03cmd\x18\x01 \x01(\tR\x03cmd\x12\x12\n" +
-	"\x04name\x18\x02 \x01(\tR\x04name\x12\x10\n" +
-	"\x03pid\x18\x03 \x01(\tR\x03pid*p\n" +
-	"\x06Status\x12\n" +
+	"\x06Exited\x10\x01\x12\n" +
 	"\n" +
-	"\x06Queued\x10\x00\x12\v\n" +
-	"\aStarted\x10\x01\x12\v\n" +
-	"\aRunning\x10\x02\x12\b\n" +
-	"\x04Hung\x10\x03\x12\r\n" +
-	"\tRunExited\x10\x04\x12\r\n" +
-	"\tRunKilled\x10\x05\x12\r\n" +
-	"\tRunFailed\x10\x06\x12\t\n" +
-	"\x05Error\x10\a*\xa1\x03\n" +
-	"\x06Signal\x12\v\n" +
-	"\aSIGTERM\x10\x00\x12\n" +
-	"\n" +
-	"\x06SIGHUP\x10\x01\x12\n" +
-	"\n" +
-	"\x06SIGINT\x10\x02\x12\v\n" +
-	"\aSIGQUIT\x10\x03\x12\n" +
-	"\n" +
-	"\x06SIGILL\x10\x04\x12\v\n" +
-	"\aSIGTRAP\x10\x05\x12\v\n" +
-	"\aSIGABRT\x10\x06\x12\n" +
-	"\n" +
-	"\x06SIGIOT\x10\a\x12\n" +
-	"\n" +
-	"\x06SIGBUS\x10\b\x12\n" +
-	"\n" +
-	"\x06SIGFPE\x10\t\x12\v\n" +
-	"\aSIGKILL\x10\n" +
-	"\x12\v\n" +
-	"\aSIGUSR1\x10\v\x12\v\n" +
-	"\aSIGSEGV\x10\f\x12\v\n" +
-	"\aSIGUSR2\x10\r\x12\v\n" +
-	"\aSIGPIPE\x10\x0e\x12\v\n" +
-	"\aSIGALRM\x10\x0f\x12\r\n" +
-	"\tSIGSTKFLT\x10\x10\x12\v\n" +
-	"\aSIGCHLD\x10\x11\x12\n" +
-	"\n" +
-	"\x06SIGCLD\x10\x12\x12\v\n" +
-	"\aSIGSTOP\x10\x13\x12\v\n" +
-	"\aSIGTSTP\x10\x14\x12\v\n" +
-	"\aSIGTTIN\x10\x15\x12\v\n" +
-	"\aSIGTTOU\x10\x16\x12\n" +
-	"\n" +
-	"\x06SIGURG\x10\x17\x12\v\n" +
-	"\aSIGXCPU\x10\x18\x12\v\n" +
-	"\aSIGXFSZ\x10\x19\x12\r\n" +
-	"\tSIGVTALRM\x10\x1a\x12\v\n" +
-	"\aSIGPROF\x10\x1b\x12\f\n" +
-	"\bSIGWINCH\x10\x1c\x12\t\n" +
-	"\x05SIGIO\x10\x1d\x12\n" +
-	"\n" +
-	"\x06SIGPWR\x10\x1e\x12\n" +
-	"\n" +
-	"\x06SIGSYS\x10\x1f2\xc0\x02\n" +
+	"\x06Killed\x10\x02\x12\t\n" +
+	"\x05Error\x10\x032\xbd\x02\n" +
 	"\x04Jobs\x12A\n" +
 	"\x06Output\x12\x18.tpworker.jobs.OutputReq\x1a\x19.tpworker.jobs.OutputResp\"\x000\x01\x128\n" +
 	"\x04Ping\x12\x16.tpworker.jobs.PingMsg\x1a\x16.tpworker.jobs.PingMsg\"\x00\x12?\n" +
-	"\x06Status\x12\x18.tpworker.jobs.StatusReq\x1a\x19.tpworker.jobs.StatusResp\"\x00\x12=\n" +
-	"\x05Start\x12\x17.tpworker.jobs.StartReq\x1a\x19.tpworker.jobs.ActionResp\"\x00\x12;\n" +
-	"\x04Stop\x12\x16.tpworker.jobs.StopReq\x1a\x19.tpworker.jobs.ActionResp\"\x00B\x16Z\x14tp-worker/proto/jobsb\x06proto3"
+	"\x06Status\x12\x18.tpworker.jobs.StatusReq\x1a\x19.tpworker.jobs.StatusResp\"\x00\x12<\n" +
+	"\x05Start\x12\x17.tpworker.jobs.StartReq\x1a\x18.tpworker.jobs.StartResp\"\x00\x129\n" +
+	"\x04Stop\x12\x16.tpworker.jobs.StopReq\x1a\x17.tpworker.jobs.StopResp\"\x00B\x16Z\x14tp-worker/proto/jobsb\x06proto3"
 
 var (
 	file_jobs_proto_rawDescOnce sync.Once
@@ -824,40 +633,39 @@ func file_jobs_proto_rawDescGZIP() []byte {
 	return file_jobs_proto_rawDescData
 }
 
-var file_jobs_proto_enumTypes = make([]protoimpl.EnumInfo, 2)
-var file_jobs_proto_msgTypes = make([]protoimpl.MessageInfo, 9)
+var file_jobs_proto_enumTypes = make([]protoimpl.EnumInfo, 1)
+var file_jobs_proto_msgTypes = make([]protoimpl.MessageInfo, 10)
 var file_jobs_proto_goTypes = []any{
 	(Status)(0),        // 0: tpworker.jobs.Status
-	(Signal)(0),        // 1: tpworker.jobs.Signal
-	(*OutputReq)(nil),  // 2: tpworker.jobs.OutputReq
-	(*OutputResp)(nil), // 3: tpworker.jobs.OutputResp
-	(*PingMsg)(nil),    // 4: tpworker.jobs.PingMsg
-	(*StatusReq)(nil),  // 5: tpworker.jobs.StatusReq
-	(*StatusLine)(nil), // 6: tpworker.jobs.StatusLine
-	(*StatusResp)(nil), // 7: tpworker.jobs.StatusResp
-	(*StartReq)(nil),   // 8: tpworker.jobs.StartReq
+	(*OutputReq)(nil),  // 1: tpworker.jobs.OutputReq
+	(*OutputResp)(nil), // 2: tpworker.jobs.OutputResp
+	(*PingMsg)(nil),    // 3: tpworker.jobs.PingMsg
+	(*StatusReq)(nil),  // 4: tpworker.jobs.StatusReq
+	(*StatusLine)(nil), // 5: tpworker.jobs.StatusLine
+	(*StatusResp)(nil), // 6: tpworker.jobs.StatusResp
+	(*StartReq)(nil),   // 7: tpworker.jobs.StartReq
+	(*StartResp)(nil),  // 8: tpworker.jobs.StartResp
 	(*StopReq)(nil),    // 9: tpworker.jobs.StopReq
-	(*ActionResp)(nil), // 10: tpworker.jobs.ActionResp
+	(*StopResp)(nil),   // 10: tpworker.jobs.StopResp
 }
 var file_jobs_proto_depIdxs = []int32{
 	0,  // 0: tpworker.jobs.StatusLine.status:type_name -> tpworker.jobs.Status
-	6,  // 1: tpworker.jobs.StatusResp.statusline:type_name -> tpworker.jobs.StatusLine
-	1,  // 2: tpworker.jobs.StopReq.signal:type_name -> tpworker.jobs.Signal
-	2,  // 3: tpworker.jobs.Jobs.Output:input_type -> tpworker.jobs.OutputReq
-	4,  // 4: tpworker.jobs.Jobs.Ping:input_type -> tpworker.jobs.PingMsg
-	5,  // 5: tpworker.jobs.Jobs.Status:input_type -> tpworker.jobs.StatusReq
-	8,  // 6: tpworker.jobs.Jobs.Start:input_type -> tpworker.jobs.StartReq
-	9,  // 7: tpworker.jobs.Jobs.Stop:input_type -> tpworker.jobs.StopReq
-	3,  // 8: tpworker.jobs.Jobs.Output:output_type -> tpworker.jobs.OutputResp
-	4,  // 9: tpworker.jobs.Jobs.Ping:output_type -> tpworker.jobs.PingMsg
-	7,  // 10: tpworker.jobs.Jobs.Status:output_type -> tpworker.jobs.StatusResp
-	10, // 11: tpworker.jobs.Jobs.Start:output_type -> tpworker.jobs.ActionResp
-	10, // 12: tpworker.jobs.Jobs.Stop:output_type -> tpworker.jobs.ActionResp
-	8,  // [8:13] is the sub-list for method output_type
-	3,  // [3:8] is the sub-list for method input_type
-	3,  // [3:3] is the sub-list for extension type_name
-	3,  // [3:3] is the sub-list for extension extendee
-	0,  // [0:3] is the sub-list for field type_name
+	5,  // 1: tpworker.jobs.StatusResp.statusline:type_name -> tpworker.jobs.StatusLine
+	1,  // 2: tpworker.jobs.Jobs.Output:input_type -> tpworker.jobs.OutputReq
+	3,  // 3: tpworker.jobs.Jobs.Ping:input_type -> tpworker.jobs.PingMsg
+	4,  // 4: tpworker.jobs.Jobs.Status:input_type -> tpworker.jobs.StatusReq
+	7,  // 5: tpworker.jobs.Jobs.Start:input_type -> tpworker.jobs.StartReq
+	9,  // 6: tpworker.jobs.Jobs.Stop:input_type -> tpworker.jobs.StopReq
+	2,  // 7: tpworker.jobs.Jobs.Output:output_type -> tpworker.jobs.OutputResp
+	3,  // 8: tpworker.jobs.Jobs.Ping:output_type -> tpworker.jobs.PingMsg
+	6,  // 9: tpworker.jobs.Jobs.Status:output_type -> tpworker.jobs.StatusResp
+	8,  // 10: tpworker.jobs.Jobs.Start:output_type -> tpworker.jobs.StartResp
+	10, // 11: tpworker.jobs.Jobs.Stop:output_type -> tpworker.jobs.StopResp
+	7,  // [7:12] is the sub-list for method output_type
+	2,  // [2:7] is the sub-list for method input_type
+	2,  // [2:2] is the sub-list for extension type_name
+	2,  // [2:2] is the sub-list for extension extendee
+	0,  // [0:2] is the sub-list for field type_name
 }
 
 func init() { file_jobs_proto_init() }
@@ -865,16 +673,13 @@ func file_jobs_proto_init() {
 	if File_jobs_proto != nil {
 		return
 	}
-	file_jobs_proto_msgTypes[3].OneofWrappers = []any{}
-	file_jobs_proto_msgTypes[6].OneofWrappers = []any{}
-	file_jobs_proto_msgTypes[7].OneofWrappers = []any{}
 	type x struct{}
 	out := protoimpl.TypeBuilder{
 		File: protoimpl.DescBuilder{
 			GoPackagePath: reflect.TypeOf(x{}).PkgPath(),
 			RawDescriptor: unsafe.Slice(unsafe.StringData(file_jobs_proto_rawDesc), len(file_jobs_proto_rawDesc)),
-			NumEnums:      2,
-			NumMessages:   9,
+			NumEnums:      1,
+			NumMessages:   10,
 			NumExtensions: 0,
 			NumServices:   1,
 		},

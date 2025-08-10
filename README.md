@@ -35,33 +35,16 @@ the machine running the service, such as `ls -lha`.
 The repository follows
 [standard Go conventions on module organization](https://go.dev/doc/modules/layout).
 
-```sh
+```
 tp-worker/
   go.mod
   go.sum
   cmd/
     tp-worker-server/
-      tp-worker-server.go
     tp-worker-client/
-      tp-worker-client.go
   internal/
-    authn/
-      authn.go
-      authn_test.go
-    authz/
-      authz.go
-      authz_test.go
-    job/
-      job.go
-      job_test.go
-    output-storage/
-      output-storage.go
-      output-storage_test.go
   job/
-    job.go
-    job_test.go
   proto/
-    tp-worker.proto
 ```
 
 As much as possible, following [Effective Go](https://go.dev/doc/effective_go)
@@ -79,6 +62,26 @@ the
 [`grpc-go` repository,](https://github.com/grpc/grpc-go/tree/master/examples/features/encryption/mTLS)
 that will be used as an initial base for the server and client implementations
 to grow out of.
+
+## Authorization
+
+For example user authorization the server will read a JSON file that implements
+a basic user schema with two roles and three users.
+
+```
+[
+  { user: "may", roles: ["admin", "user"] },
+  { user: "susan", roles: ["user"] },
+  { user: "toby", roles: ["user"] },
+]
+```
+
+`admin` role will be able to view processes from all users.
+
+`user` role will only be able to view their own processes.
+
+Outside of scope is providing an Interface for library users to utilize an
+external system for user authorization. See the `Further Development` section.
 
 ## Usage Examples
 
@@ -120,68 +123,62 @@ Server OK at 127.0.0.1:8080
 ### Client Starts a Job
 `ls -lha` used as example.
 
-The `--name` argument can be passed to provide a unique name to the job,
-otherwise we assign the job a unique name based on the command and an increment.
-Names must start with a letter to prevent confusion with pid's elsewhere. Names
-are global. Fails if the name is already taken.
+Environment variables may be passed using the `-e` option as many times as is
+necessary.
 
-The `-f` or `--follow` argument is equivalent to `tail -f`, which immediately
-attaches to the streaming output of the job.
+The `--` convention is used to signal the end of options being provided to
+`start` and the beginning of operands being passed as outlined in
+[Guideline 10 of Section 12.2 of POSIX conventions.](https://pubs.opengroup.org/onlinepubs/9699919799/basedefs/V1_chap12.html)
+
+ID's assigned to jobs are (psuedo) random, but need not be cryptographically
+secure since they are not encoding or hashing anything. A random enough sequence
+of 12 letters and numbers should be sufficient at this stage.
 
 ```sh
-tp-worker-client start 'ls -lha'
-Server 127.0.0.1:8080: Started job 'ls1' at pid 12345: ls -lha
+# auth'd as user `bob`
+tp-worker-client start -e FOO=bar -- ls -lha
+Server 127.0.0.1:8080: Started job 1a2b3c1a2b3c: FOO=bar ls -lha
+
+# or if supplied with a command that does not exist
+tp-worker-client start -- foo
+Server 127.0.0.1:8080: ERROR: Command `foo` not present in $PATH on this system
 ```
 
 ### Client Stops a Job
 
-Either a name or pid is required. Since a name must start with a letter we
-should be able to do this without requiring either `--name` or `--pid`
-arguments, though they could be available to make people feel better.
+Requires the ID of the process to be passed.
 
-The `-s` or `--signal` argument is equivalent to `kill -s`, where the user may
-select the signal to be sent to the process. Can accept either the signal
-name or number, such as `SIGKILL` or equivalently `9`. Defaults to `SIGTERM`
-or `15`. See `Signal numbering for standard signals` in `signal(7)` manpage
-for the full list of signals.
+Defaults to `SIGKILL`. Addition of other signals is outside of scope.
 
 ```sh
-tp-worker-client stop ls1
-
-# or
-
-tp-worker-client stop 12345
-Server 127.0.0.1:8080: Stopped job 'ls1' at pid 12345: ls -lha
+tp-worker-client stop 1a2b3c1a2b3c
+Server 127.0.0.1:8080: Stopped job 1a2b3c1a2b3c: FOO=bar ls -lha
 ```
 
 ### Client Checks Job Status
 
 Possible statuses:
-* Queued (after queue tracking has been added to scope)
-* Started (the job has been sent to the system, but no output received yet)
-* Running (the job is running and output is being received)
-* Hung (the job is running, but no new output has been received for some time)
-* RunExited (the job stopped normally)
-* RunKilled (the job was killed by the user)
-* RunFailed (the job stopped abnormally)
-* Error (the job could not be run due to a system issue)
+* Started (the job has been sent to the system)
+* Exited (the job stopped with an exit code)
+* Killed (the job was killed by the user)
+* Error (the job could not be run due to an error with the server)
 
 The below status command prints a table of all commands run by the user since
-server start. Can also be run with multiple `--name` or `--pid` arguments to
-get a table of statuses of selected jobs submitted by the user.
+server start. If the user has `admin` role, it prints a table of all commands
+run on the system since server start.
 
 ```sh
 tp-worker-client status
-PID   NAME  STATUS  OUTLEN SUBMITTED STARTED  STOPPED   DURATION
-12345 ls1   Running 6      15:55:55  15:55:55 15:55:57  2s
+ID            USER COMMAND          STATUS EXITCODE  STARTED             STOPPED             DURATION
+1a2b3c1a2b3c  bob  FOO=bar ls -lha  Exited 0         2025-08-10T15:55:55 2025-08-10T15:55:56 1s
 ```
 
 ### Client Streams Output
 
-Requires either a name or pid to be passed, like `stop` commmand does.
+Requires ID to be passed, like `stop` commmand does.
 
-```
-tp-worker-client output ls1
+```sh
+tp-worker-client output 1a2b3c1a2b3c
 ...
 < Streamed Output >
 ...
@@ -263,3 +260,26 @@ gave or the string `**** REDACTED ****`.
    Vault, Akeyless, etc.
 2. Create our own secure secrets storage and management app that is hosted
    alongside this app.
+
+### Interface for User Authorizations
+
+Provide an Interface that library users may satisfy to interface with an
+external system for User Authorizations such as LDAP, SSO/SAML, or a custom
+solution.
+
+### Addtional command options
+
+#### Client
+
+`start`
+* Option to pass `-f` or `--follow` so the user may start a process and
+  immediately attach to the output.
+* User supplied process names. This is subject to more research to determine
+  security implications.
+
+`stop`
+* Option of different signals to stop the process with, such as `SIGTERM` or
+  `SIGABRT`.
+
+`status`
+* Option to filter by command name, pid, or (if admin) by user.
