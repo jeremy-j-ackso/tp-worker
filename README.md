@@ -91,8 +91,8 @@ external system for user authorization. See the `Further Development` section.
 ```sh
 TP_WORKER_IP=127.0.0.1                          # --ip-addr
 TP_WORKER_PORT=8080                             # --port
-TP_WORKER_USER_CERTDIR=/path/to/cert/dir/       # --user-certs
 TP_WORKER_PRIVATE_KEY=/path/to/private/key.pem  # --private-key
+TP_WORKER_PUBLIC_CERT=/path/to/public/cert.pem  # --public-cert
 ```
 
 #### Client
@@ -100,6 +100,7 @@ TP_WORKER_PRIVATE_KEY=/path/to/private/key.pem  # --private-key
 TP_WORKER_IP=127.0.0.1                                # --ip-addr
 TP_WORKER_PORT=8080                                   # --port
 TP_WORKER_CLIENT_PRIVATE_KEY=/path/to/private/key.pem # --private-key
+TP_WORKER_CLIENT_PUBLIC_CERT=/path/to/public/cert.pem # --public-cert
 ```
 
 ### Start the Server
