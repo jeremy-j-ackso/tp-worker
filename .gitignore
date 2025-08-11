@@ -1,0 +1,17 @@
+# Local notekeeping and ideas for this project
+NOTES.md
+
+# Editor swap files
+*.sw[op]
+
+# Local env/secret files
+.env
+
+# Build directory
+/bin/
+
+# Vendored packages
+/vendor/
+
+# Local tmp
+/tmp/

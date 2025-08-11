@@ -1,0 +1,76 @@
+syntax = "proto3";
+
+option go_package = "tp-worker/proto/jobs";
+
+package tpworker.jobs;
+
+// Jobs service definition
+service Jobs {
+  // Stream job output
+  rpc Output (OutputReq) returns (stream OutputResp) {}
+
+  // Ping the server
+  rpc Ping (PingMsg) returns (PingMsg) {}
+
+  // Get job status
+  rpc Status (StatusReq) returns (StatusResp) {}
+
+  // Start a job
+  rpc Start (StartReq) returns (StartResp) {}
+
+  // Stop a job
+  rpc Stop (StopReq) returns (StopResp) {}
+}
+
+message OutputReq {
+  string id = 1;
+}
+
+message OutputResp {
+  bytes out = 1;
+}
+
+message PingMsg {}
+
+message StatusReq {
+  string id = 1;
+}
+
+enum Status {
+  Started = 0;
+  Exited = 1;
+  Killed = 2;
+  Error = 3;
+}
+
+message StatusLine {
+  string id = 1;
+  string user = 2;
+  repeated string command = 3;
+  Status status = 4;
+  int32 exitcode = 5;
+  int64 started = 6;
+  int64 stopped = 7;
+}
+
+message StatusResp {
+  repeated StatusLine statusline = 1;
+}
+
+message StartReq {
+  repeated string cmd = 1;
+  repeated string env = 2;
+}
+
+message StartResp {
+  string id = 1;
+}
+
+message StopReq {
+  string id = 1;
+}
+
+message StopResp {
+  string cmd = 1;
+  string id = 2;
+}
